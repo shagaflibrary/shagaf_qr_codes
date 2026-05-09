@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shagaf — QR Codes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Tajawal:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --ink:    #0e0e0e;
+      --paper:  #f5f0e8;
+      --gold:   #c9a84c;
+      --mist:   #d8d0c0;
+      --card:   #161616;
+    }
+
+```
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'Tajawal', sans-serif;
+  min-height: 100vh;
+  padding: 60px 40px;
+}
+
+/* Grain */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
+
+/* Header */
+header {
+  text-align: center;
+  margin-bottom: 64px;
+  animation: fadeUp 0.8s ease forwards;
+}
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: 3.5rem;
+  letter-spacing: 0.2em;
+  color: var(--paper);
+  direction: ltr;
+}
+.logo span { color: var(--gold); }
+.subtitle {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--mist);
+  opacity: 0.6;
+  direction: ltr;
+}
+.divider {
+  width: 60px; height: 1px;
+  background: var(--gold);
+  margin: 24px auto;
+  opacity: 0.6;
+}
+.instruction {
+  font-size: 0.95rem;
+  color: var(--mist);
+  opacity: 0.7;
+  line-height: 1.7;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 56px;
+  flex-wrap: wrap;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+.btn {
+  padding: 12px 28px;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  border: none;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--gold); color: var(--ink); }
+.btn-primary:hover { opacity: 0.85; }
+.btn-secondary { background: transparent; color: var(--paper); border: 1px solid rgba(255,255,255,0.15); }
+.btn-secondary:hover { border-color: rgba(255,255,255,0.4); }
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+
+/* Card */
+.card {
+  background: var(--card);
+  border: 1px solid rgba(201,168,76,0.12);
+  border-radius: 4px;
+  padding: 32px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.card:hover {
+  border-color: rgba(201,168,76,0.35);
+  transform: translateY(-3px);
+}
+
+.card-name {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--paper);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* QR container */
+.qr-wrap {
+  background: #fff;
+  padding: 12px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qr-wrap canvas,
+.qr-wrap img { display: block; }
+
+.card-url {
+  font-size: 0.68rem;
+  color: var(--mist);
+  opacity: 0.45;
+  text-align: center;
+  word-break: break-all;
+  direction: ltr;
+  line-height: 1.5;
+}
+
+.download-btn {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold);
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.download-btn:hover {
+  background: rgba(201,168,76,0.08);
+  border-color: var(--gold);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 64px;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--mist);
+  opacity: 0.3;
+  text-transform: uppercase;
+  direction: ltr;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Print styles */
+@media print {
+  body { background: #fff; color: #000; padding: 20px; }
+  body::before { display: none; }
+  .actions { display: none; }
+  .card {
+    background: #fff;
+    border: 1px solid #ddd;
+    break-inside: avoid;
+  }
+  .card-name { color: #000; }
+  .download-btn { display: none; }
+  .card-url { color: #666; opacity: 1; }
+  footer { color: #999; opacity: 1; }
+  .logo { color: #000; }
+  .subtitle, .instruction { color: #666; }
+  .divider { background: #c9a84c; }
+}
+```
+
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo">SHA<span>G</span>AF</div>
+    <div class="subtitle">Ziarat Deep Links — QR Codes</div>
+    <div class="divider"></div>
+    <p class="instruction">اضغط على "تحميل" لحفظ كل رمز QR كصورة، أو اطبع الصفحة كاملة</p>
+  </header>
+
+  <div class="actions">
+    <button class="btn btn-primary" onclick="downloadAll()">⬇ تحميل الكل</button>
+    <button class="btn btn-secondary" onclick="window.print()">🖨 طباعة</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>Shagaf Library © 2025 — shagaflibrary.github.io/shagaf-links</footer>
+
+</div>
+
+<script>
+  const BASE = 'https://shagaflibrary.github.io/shagaf-links/';
+
+  const ziarats = [
+    { id: 'ziarat-warith',        name: 'زيارة وارث' },
+    { id: 'ziarat-ashura',        name: 'زيارة عاشوراء' },
+    { id: 'ziarat-al-yassin',     name: 'زيارة آل ياسين' },
+    { id: 'ziarat-al-rasool',     name: 'زيارة الرسول' },
+    { id: 'ziarat-amin-allah',    name: 'زيارة امين الله' },
+    { id: 'ziarat-al-arbaeen',    name: 'زيارة الأربعين' },
+    { id: 'ziarat-fatima-al-zahra', name: 'زيارة فاطمة الزهراء' },
+    { id: 'ziarat-abil-fazl',     name: 'زيارة ابي الفضل' },
+    { id: 'ziarat-umm-al-banin',  name: 'زيارة ام البنين' },
+    { id: 'ziarat-ali-al-akbar',  name: 'زيارة علي الأكبر' },
+  ];
+
+  const grid = document.getElementById('grid');
+
+  ziarats.forEach((z, i) => {
+    const url = `${BASE}?ziarat=${z.id}`;
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.animationDelay = `${0.05 * i}s`;
+
+    card.innerHTML = `
+      <div class="card-name">${z.name}</div>
+      <div class="qr-wrap" id="qr-wrap-${i}"></div>
+      <div class="card-url">${url}</div>
+      <button class="download-btn" onclick="downloadQR(${i}, '${z.id}')">⬇ تحميل QR</button>
+    `;
+
+    grid.appendChild(card);
+
+    // Generate QR
+    new QRCode(document.getElementById(`qr-wrap-${i}`), {
+      text: url,
+      width: 180,
+      height: 180,
+      colorDark: '#0e0e0e',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H,
+    });
+  });
+
+  function getCanvas(index) {
+    const wrap = document.getElementById(`qr-wrap-${index}`);
+    return wrap.querySelector('canvas');
+  }
+
+  function downloadQR(index, id) {
+    const canvas = getCanvas(index);
+    if (!canvas) return;
+    const link = document.createElement('a');
+    link.download = `shagaf-qr-${id}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+
+  function downloadAll() {
+    ziarats.forEach((z, i) => {
+      setTimeout(() => downloadQR(i, z.id), i * 300);
+    });
+  }
+</script>
+
+</body>
+</html>
