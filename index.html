@@ -138,7 +138,7 @@ header {
 /* QR container */
 .qr-wrap {
   background: #fff;
-  padding: 12px;
+  padding: 6px;
   border-radius: 3px;
   display: flex;
   align-items: center;
@@ -272,11 +272,11 @@ footer {
     // Generate QR
     new QRCode(document.getElementById(`qr-wrap-${i}`), {
       text: url,
-      width: 180,
-      height: 180,
+      width: 80,
+      height: 80,
       colorDark: '#0e0e0e',
       colorLight: '#ffffff',
-      correctLevel: QRCode.CorrectLevel.H,
+      correctLevel: QRCode.CorrectLevel.L,
     });
   });
 
